@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeuPhane Assistec - Sistema Integrado v8.5</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --brand-color: #365f84;
+            --primary: #365f84;
+            --primary-dark: #2c4d6b;
+            --secondary: #64748b;
+            --bg-body: #f1f5f9;
+            --bg-panel: #ffffff;
+            --text-main: #1e293b;
+            --border: #e2e8f0;
+            --radius: 8px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background-color: var(--brand-color);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+
+        .logo-container {
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            max-width: 100%;
+            max-height: 100px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--brand-color);
+            border: 2px solid var(--brand-color);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .menu-group {
+            padding: 20px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 700;
+            border-left: 4px solid #fff;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-weight: 700;
+            color: var(--brand-color);
+        }
+
+        .panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CARDS & BOXES */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--brand-color);
+        }
+
+        .stat-card h3 {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 5px;
+        }
+
+        .content-box {
+            background: white;
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        /* TABLE & FORMS */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            background: #f8fafc;
+            border-bottom: 2px solid var(--border);
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-color);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-info {
+            background-color: var(--info);
+            color: white;
+        }
+
+        .btn-purple {
+            background-color: var(--purple);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--brand-color);
+            color: var(--brand-color);
+        }
+
+        .btn-secondary-outline {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-top: 5px;
+            outline: none;
+            background: #fff;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-top: 10px;
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        /* BADGES */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .bg-pendente {
+            background-color: var(--warning);
+        }
+
+        .bg-analise {
+            background-color: var(--info);
+        }
+
+        .bg-pronto {
+            background-color: var(--success);
+        }
+
+        .bg-entregue {
+            background-color: var(--secondary);
+        }
+
+        .bg-aprovado {
+            background-color: var(--purple);
+        }
+
+        /* PDV */
+        .pdv-container {
+            display: flex;
+            gap: 20px;
+            height: calc(100vh - 150px);
+        }
+
+        .pdv-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .pdv-right {
+            width: 380px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .carrinho-lista {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .carrinho-footer {
+            padding: 20px;
+            background: #f8fafc;
+            border-top: 1px dashed var(--border);
+        }
+
+        .total-display {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--brand-color);
+            text-align: right;
+            display: block;
+            margin: 10px 0;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 700px;
+            max-width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Modal de Confirmação menor */
+        .modal-box.confirm-box {
+            width: 400px;
+            text-align: center;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 5px solid var(--brand-color);
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* LISTA ITENS ORÇAMENTO */
+        .orc-item-list {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .orc-item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        /* --- ESTILOS DE IMPRESSÃO A4 --- */
+        #print-a4-container {
+            display: none;
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            color: black;
+            padding: 15mm;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .a4-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* ALTERAÇÃO: Tamanho do Logo aumentado */
+        .a4-logo-area {
+            width: 200px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .a4-logo-area img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .a4-empresa-data {
+            flex: 1;
+        }
+
+        .a4-logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .a4-info-empresa {
+            font-size: 12px;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        .a4-meta-data {
+            text-align: right;
+            min-width: 120px;
+        }
+
+        .a4-doc-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-transform: uppercase;
+            border: 1px solid #000;
+            padding: 5px;
+            background: #eee;
+        }
+
+        .a4-section {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .a4-section-title {
+            font-weight: bold;
+            font-size: 14px;
+            background: #f0f0f0;
+            padding: 5px;
+            margin: -10px -10px 10px -10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .a4-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .a4-field {
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .a4-label {
+            font-weight: bold;
+        }
+
+        .a4-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .a4-table th,
+        .a4-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .a4-table th {
+            background-color: #eee;
+        }
+
+        .a4-total-area {
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .a4-terms {
+            font-size: 10px;
+            text-align: justify;
+            margin-top: 30px;
+            border-top: 1px solid #000;
+            padding-top: 10px;
+        }
+
+        .a4-signatures {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .a4-sign-line {
+            border-top: 1px solid #000;
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo-container" id="sidebar-logo-container">
+            <img src="logo.png" alt="DeuPhane" id="sidebar-logo-img"
+                onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'logo-text\'>DeuPhane<br>ASSISTEC</div>'">
+        </div>
+        <div class="menu-group">
+            <div class="menu-item active" onclick="nav('dashboard', this)"><i class="fas fa-chart-line"></i> Dashboard
+            </div>
+            <div class="menu-item" onclick="nav('orcamentos', this)"><i class="fas fa-file-invoice-dollar"></i>
+                Orçamentos</div>
+            <div class="menu-item" onclick="nav('os', this)"><i class="fas fa-tools"></i> Ordens de Serviço</div>
+            <div class="menu-item" onclick="nav('pdv', this)"><i class="fas fa-cash-register"></i> PDV / Vendas</div>
+            <div class="menu-item" onclick="nav('estoque', this)"><i class="fas fa-box-open"></i> Estoque</div>
+            <div class="menu-item" onclick="nav('config', this)"><i class="fas fa-cog"></i> Configurações</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h2 id="page-title">Visão Geral</h2>
+            <div style="font-size: 0.9rem; color: var(--secondary);">
+                <i class="far fa-calendar"></i> <span id="data-hoje"></span>
+            </div>
+        </div>
+
+        <div id="dashboard" class="panel active">
+            <div class="card-grid">
+                <div class="stat-card">
+                    <h3>Vendas Hoje</h3>
+                    <p id="dash-vendas">R$ 0,00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>OS Pendentes</h3>
+                    <p id="dash-os-pendente">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Orçamentos Abertos</h3>
+                    <p id="dash-orc-pendente">0</p>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <h3>Últimas Vendas</h3>
+                <div id="lista-vendas-dashboard" style="margin-top:15px;"></div>
+            </div>
+        </div>
+
+        <div id="orcamentos" class="panel">
+            <div class="content-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3>Gestão de Orçamentos</h3>
+                    <button class="btn btn-purple" onclick="abrirModalOrcamento()"><i class="fas fa-plus"></i> Novo
+                        Orçamento</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Cliente</th>
+                                <th>Valor Total</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-orcamentos"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="os" class="panel">
+            <div class="content-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3>Gestão de Serviços</h3>
+                    <button class="btn btn-primary" onclick="abrirModalOS()"><i class="fas fa-plus"></i> Nova
+                        OS</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Cliente</th>
+                                <th>Aparelho</th>
+                                <th>Status</th>
+                                <th>Valor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-os"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="pdv" class="panel">
+            <div class="pdv-container">
+                <div class="pdv-left">
+                    <div class="content-box" style="padding: 15px;">
+                        <label style="margin-top:0"><i class="fas fa-user"></i> Identificar Cliente (Opcional)</label>
+                        <input type="text" id="pdv-cliente-nome" placeholder="Digite o nome do cliente...">
+                    </div>
+
+                    <div class="content-box">
+                        <h3><i class="fas fa-barcode"></i> Adicionar Produto</h3>
+                        <div class="form-grid" style="display:grid; grid-template-columns: 2fr 1fr; gap:15px;">
+                            <div><label>Produto</label><select id="pdv-prod"></select></div>
+                            <div><label>Qtd</label><input type="number" id="pdv-qtd" value="1" min="1"></div>
+                        </div>
+                        <button class="btn btn-primary" style="width:100%; margin-top:15px;"
+                            onclick="addCarrinho()">ADICIONAR ITEM</button>
+                    </div>
+
+                    <div class="content-box" style="border-left: 5px solid var(--info);">
+                        <h3><i class="fas fa-tools"></i> Incluir Ordem de Serviço</h3>
+                        <div class="form-grid"
+                            style="display:grid; grid-template-columns: 1fr auto; gap:15px; align-items:end;">
+                            <div>
+                                <label>OS Pronta/Pendente (Valor > 0)</label>
+                                <select id="pdv-os-select">
+                                    <option value="">Carregando...</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-info" onclick="addOsAoCarrinho()"><i class="fas fa-plus"></i> Incluir
+                                OS</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pdv-right">
+                    <div
+                        style="background: var(--brand-color); color:white; padding:20px; font-weight:bold; display:flex; justify-content:space-between;">
+                        <span><i class="fas fa-shopping-basket"></i> CAIXA</span>
+                        <small>Itens: <span id="count-itens">0</span></small>
+                    </div>
+                    <div class="carrinho-lista" id="pdv-lista"></div>
+                    <div class="carrinho-footer">
+                        <label style="margin-top:0;">Forma de Pagamento</label>
+                        <select id="pdv-pgto-metodo" style="margin-bottom:15px; font-weight:bold;"
+                            onchange="checkParcelas()">
+                            <option value="Pix">Pix</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cartão Crédito">Cartão de Crédito</option>
+                            <option value="Cartão Débito">Cartão de Débito</option>
+                        </select>
+
+                        <div id="div-parcelas" style="display:none; margin-bottom:15px;">
+                            <label style="margin-top:0;">Nº Parcelas</label>
+                            <input type="number" id="pdv-parcelas-qtd" value="1" min="1" max="12">
+                        </div>
+
+                        <small>Total a Pagar</small>
+                        <span class="total-display" id="pdv-total">R$ 0,00</span>
+                        <button class="btn btn-success" style="width:100%; height: 50px; font-size: 1.1rem;"
+                            onclick="preFinalizarVenda()">
+                            <i class="fas fa-check-circle"></i> FINALIZAR VENDA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="estoque" class="panel">
+            <div class="content-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3>Inventário de Produtos</h3>
+                    <button class="btn btn-primary" onclick="abrirModalProduto()"><i class="fas fa-plus"></i> Novo
+                        Produto</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Preço Venda</th>
+                                <th>Estoque</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-estoque"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="config" class="panel">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="content-box">
+                    <h3>Configurações da Empresa</h3>
+                    <div><label>Nome Fantasia</label><input type="text" id="cfg-nome"></div>
+                    <div class="form-grid">
+                        <div><label>CNPJ (Opcional)</label><input type="text" id="cfg-cnpj"
+                                placeholder="00.000.000/0000-00" maxlength="18"></div>
+                        <div><label>Telefone</label><input type="text" id="cfg-tel" placeholder="(00) 00000-0000"
+                                maxlength="15"></div>
+                    </div>
+                    <div><label>Endereço</label><input type="text" id="cfg-end"></div>
+                    <div><label>Rodapé (Mensagem)</label><input type="text" id="cfg-footer"></div>
+                    <div style="margin-top: 20px; text-align: right;">
+                        <button class="btn btn-primary" onclick="salvarConfig()"><i class="fas fa-save"></i> Salvar
+                            Dados</button>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <h3>Serviços Pré-definidos</h3>
+                    <div style="display:flex; gap:10px; align-items:end;">
+                        <div style="flex:1;"><label>Novo Serviço</label><input type="text" id="novo-servico-nome"
+                                placeholder="Ex: Formatação, Troca de Tela..."></div>
+                        <button class="btn btn-success" onclick="addServicoCadastro()"><i
+                                class="fas fa-plus"></i></button>
+                    </div>
+                    <ul id="lista-servicos-config"
+                        style="margin-top:15px; list-style:none; max-height: 250px; overflow-y:auto; border:1px solid #eee; padding:10px;">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <div class="modal-overlay" id="modal-orcamento">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Novo Orçamento</h3><button onclick="fecharModal('modal-orcamento')"
+                    style="border:none; background:none; cursor:pointer;">&times;</button>
+            </div>
+            <input type="hidden" id="orc-id-hidden">
+
+            <div class="form-grid">
+                <div><label>Cliente</label><input type="text" id="orc-cliente" placeholder="Nome completo"></div>
+                <div><label>Contato</label><input type="text" id="orc-contato" placeholder="(XX) XXXXX-XXXX"
+                        maxlength="15"></div>
+            </div>
+
+            <hr style="margin: 15px 0; border:0; border-top:1px dashed #ddd;">
+
+            <div style="background: #f1f5f9; padding: 10px; border-radius: 6px;">
+                <label style="margin-top:0">Adicionar Serviço/Produto</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <div style="flex:2"><input type="text" id="orc-item-desc"
+                            placeholder="Descrição (Ex: Troca de Tela)"></div>
+                    <div style="flex:1"><input type="number" id="orc-item-val" placeholder="Valor R$" step="0.01"></div>
+                    <button class="btn btn-info" onclick="addItemOrcamento()"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+
+            <div class="orc-item-list" id="orc-lista-itens"></div>
+            <div style="text-align: right; font-weight: bold; margin-top: 10px; font-size: 1.2rem;">Total: R$ <span
+                    id="orc-total-display">0,00</span></div>
+
+            <div style="margin-top:20px; text-align:right; display:flex; justify-content:space-between;">
+                <button class="btn btn-purple" onclick="imprimirOrcamento()" id="btn-print-orc" style="display:none;"><i
+                        class="fas fa-file-pdf"></i> Baixar PDF</button>
+                <button class="btn btn-success" onclick="salvarOrcamento()">Salvar Orçamento</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-sucesso">
+        <div class="modal-box" style="text-align:center; width:400px;">
+            <div style="font-size:3rem; color:var(--success); margin-bottom:15px;"><i class="fas fa-check-circle"></i>
+            </div>
+            <h3 style="margin-bottom:10px;">Venda Concluída!</h3>
+            <p id="msg-sucesso-id" style="font-weight:bold; font-size:1.1rem; margin-bottom:5px;"></p>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button class="btn btn-secondary-outline" onclick="fecharModal('modal-sucesso')">Voltar</button>
+                <button class="btn btn-primary" onclick="imprimirCupom(ultimaVendaCache.id)"><i
+                        class="fas fa-print"></i> Recibo A4</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-confirmacao">
+        <div class="modal-box confirm-box">
+            <div style="font-size:3rem; color:var(--warning); margin-bottom:15px;"><i
+                    class="fas fa-exclamation-circle"></i>
+            </div>
+            <h3 style="margin-bottom:10px;">Atenção</h3>
+            <p id="msg-confirmacao" style="margin-bottom:20px; color:#555;">Você tem certeza?</p>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button class="btn btn-secondary-outline" onclick="fecharModal('modal-confirmacao')">Cancelar</button>
+                <button class="btn btn-primary" id="btn-confirmar-acao">Sim, Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-os-form">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Ordem de Serviço</h3><button onclick="fecharModal('modal-os-form')"
+                    style="border:none; background:none; cursor:pointer;">&times;</button>
+            </div>
+            <input type="hidden" id="os-id-hidden">
+            <div class="form-grid">
+                <div><label>Cliente</label><input type="text" id="os-cliente"></div>
+                <div><label>Telefone/WhatsApp</label><input type="text" id="os-contato" maxlength="15"></div>
+            </div>
+            <div class="form-grid">
+                <div><label>Aparelho/Modelo</label><input type="text" id="os-aparelho"></div>
+            </div>
+            <div>
+                <label>Serviço (Pré-seleção)</label>
+                <select id="os-servico-preset" onchange="aplicarServicoPreset()"></select>
+            </div>
+            <div><label>Descrição do Defeito / Serviço a Realizar</label><textarea id="os-defeito" rows="4"></textarea>
+            </div>
+            <div class="form-grid" style="margin-top:10px;">
+                <div>
+                    <label>Status</label>
+                    <select id="os-status">
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Análise">Em Análise</option>
+                        <option value="Aguardando Peça">Aguardando Peça</option>
+                        <option value="Pronto">Pronto</option>
+                        <option value="Entregue">Entregue</option>
+                    </select>
+                </div>
+                <div><label>Valor Total (R$)</label><input type="number" id="os-valor" step="0.01" value="0.00"></div>
+            </div>
+            <div style="margin-top:20px; text-align:right; display:flex; justify-content:space-between;">
+                <button class="btn btn-primary" onclick="imprimirOS()" id="btn-print-os" style="display:none;"><i
+                        class="fas fa-print"></i> Imprimir OS (A4)</button>
+                <button class="btn btn-success" onclick="salvarOS()">Salvar OS</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-produto">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Produto</h3><button onclick="fecharModal('modal-produto')"
+                    style="border:none; background:none; cursor:pointer;">&times;</button>
+            </div>
+            <div class="form-grid">
+                <div><label>Nome do Produto</label><input type="text" id="prod-nome"></div>
+                <div><label>Preço de Venda (R$)</label><input type="number" id="prod-preco" step="0.01"></div>
+                <div><label>Quantidade</label><input type="number" id="prod-qtd"></div>
+                <div><label>Mínimo (Alerta)</label><input type="number" id="prod-min" value="5"></div>
+            </div>
+            <div style="margin-top:20px; text-align:right;"><button class="btn btn-success"
+                    onclick="salvarProduto()">Salvar</button></div>
+        </div>
+    </div>
+
+    <div id="print-a4-container">
+        <div class="a4-header">
+            <div class="a4-logo-area" id="a4-logo-container">
+                <img id="a4-logo-img" src="" alt="Logo">
+            </div>
+
+            <div class="a4-empresa-data">
+                <div class="a4-logo-text" id="a4-empresa-nome">EMPRESA</div>
+                <div class="a4-info-empresa">
+                    <span id="a4-empresa-end">Endereço</span><br>
+                    <span id="a4-wrapper-cnpj">CNPJ: <span id="a4-empresa-cnpj"></span> | </span>
+                    Tel: <span id="a4-empresa-tel">000</span>
+                </div>
+            </div>
+
+            <div class="a4-meta-data">
+                <div style="font-size: 14px; font-weight: bold;">DATA: <span id="a4-data-emissao"></span></div>
+                <div style="font-size: 12px;">HORA: <span id="a4-hora-emissao"></span></div>
+            </div>
+        </div>
+
+        <div class="a4-doc-title" id="a4-titulo-doc">DOCUMENTO</div>
+
+        <div id="a4-conteudo-dinamico"></div>
+
+        <div class="a4-terms" id="a4-termos"></div>
+
+        <div class="a4-signatures" id="a4-assinaturas" style="display:none;">
+            <div class="a4-sign-line">Responsável Técnico</div>
+            <div class="a4-sign-line">Cliente</div>
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DADOS ---
+        const defaultDB = {
+            config: { nome: "DeuPhane ASSISTEC", cnpj: "", end: "Rua Exemplo, 123", tel: "(11) 99999-9999", msg: "Agradecemos a preferência!" },
+            counters: { os: 0, venda: 0, orc: 0, prod: 0 },
+            servicos: ["Formatação", "Troca de Tela", "Troca de Bateria", "Limpeza", "Backup"],
+            produtos: [],
+            os: [],
+            orcamentos: [],
+            vendas: []
+        };
+
+        let db = JSON.parse(localStorage.getItem('deuphane_v8_db')) || defaultDB;
+        let carrinho = [];
+        let orcamentoItensTemp = [];
+        let ultimaVendaCache = null;
+        let callbackConfirmacao = null;
+
+        function saveData() { localStorage.setItem('deuphane_v8_db', JSON.stringify(db)); }
+        function generateId(tipo) { db.counters[tipo]++; saveData(); return db.counters[tipo]; }
+
+        // --- FUNÇÃO DE FORMATAÇÃO DE ID (000001) ---
+        function padId(id) {
+            return id.toString().padStart(6, '0');
+        }
+
+        // --- MÁSCARAS E FORMATAÇÃO ---
+        function mascaraCNPJ(val) {
+            return val.replace(/\D/g, '')
+                .replace(/^(\d{2})(\d)/, '$1.$2')
+                .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                .replace(/(\d{4})(\d)/, '$1-$2')
+                .substring(0, 18);
+        }
+
+        function mascaraTelefone(val) {
+            let r = val.replace(/\D/g, "");
+            r = r.replace(/^0/, "");
+            if (r.length > 10) {
+                return r.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+            } else if (r.length > 5) {
+                return r.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+            } else if (r.length > 2) {
+                return r.replace(/^(\d\d)(\d{0,5}).*/, "($1) $2");
+            } else {
+                return r.replace(/^(\d*)/, "($1");
+            }
+        }
+
+        function aplicarMascaras() {
+            const inputsCNPJ = ['cfg-cnpj'];
+            const inputsTel = ['cfg-tel', 'orc-contato', 'os-contato'];
+
+            inputsCNPJ.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', (e) => e.target.value = mascaraCNPJ(e.target.value));
+            });
+
+            inputsTel.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', (e) => e.target.value = mascaraTelefone(e.target.value));
+            });
+        }
+
+        window.onload = () => {
+            document.getElementById('data-hoje').innerText = new Date().toLocaleDateString('pt-BR');
+            aplicarMascaras();
+            carregarConfigUI();
+            renderEstoque();
+            renderSelectPDV();
+            renderSelectOSPDV();
+            renderOS();
+            renderOrcamentos();
+            renderUltimasVendas();
+            renderListaServicosConfig();
+            atualizarDashboard();
+
+            document.getElementById('btn-confirmar-acao').onclick = function () {
+                if (callbackConfirmacao) callbackConfirmacao();
+                fecharModal('modal-confirmacao');
+            };
+        };
+
+        function nav(painel, elem) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(painel).classList.add('active');
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            elem.classList.add('active');
+        }
+
+        function abrirConfirmacao(msg, callback) {
+            document.getElementById('msg-confirmacao').innerText = msg;
+            callbackConfirmacao = callback;
+            const modal = document.getElementById('modal-confirmacao');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // --- ORÇAMENTOS ---
+        function abrirModalOrcamento(id = null) {
+            const modal = document.getElementById('modal-orcamento');
+            modal.style.display = 'flex'; setTimeout(() => modal.classList.add('show'), 10);
+
+            if (id) {
+                const orc = db.orcamentos.find(o => o.id === id);
+                document.getElementById('orc-id-hidden').value = orc.id;
+                document.getElementById('orc-cliente').value = orc.cliente;
+                document.getElementById('orc-contato').value = orc.contato;
+                orcamentoItensTemp = [...orc.itens];
+                document.getElementById('btn-print-orc').style.display = 'inline-flex';
+            } else {
+                document.getElementById('orc-id-hidden').value = "";
+                document.getElementById('orc-cliente').value = "";
+                document.getElementById('orc-contato').value = "";
+                orcamentoItensTemp = [];
+                document.getElementById('btn-print-orc').style.display = 'none';
+            }
+            renderOrcamentoItens();
+        }
+
+        function addItemOrcamento() {
+            const desc = document.getElementById('orc-item-desc').value;
+            const val = parseFloat(document.getElementById('orc-item-val').value);
+            if (!desc || isNaN(val)) return;
+            orcamentoItensTemp.push({ desc, val });
+            document.getElementById('orc-item-desc').value = "";
+            document.getElementById('orc-item-val').value = "";
+            renderOrcamentoItens();
+        }
+
+        function renderOrcamentoItens() {
+            const lista = document.getElementById('orc-lista-itens');
+            const totalDisplay = document.getElementById('orc-total-display');
+            lista.innerHTML = "";
+            let total = 0;
+            orcamentoItensTemp.forEach((item, idx) => {
+                total += item.val;
+                lista.innerHTML += `<div class="orc-item-row"><span>${item.desc}</span><span>R$ ${item.val.toFixed(2)} <i class="fas fa-trash" style="color:red; cursor:pointer; margin-left:10px;" onclick="rmItemOrc(${idx})"></i></span></div>`;
+            });
+            totalDisplay.innerText = total.toFixed(2);
+        }
+
+        function rmItemOrc(idx) { orcamentoItensTemp.splice(idx, 1); renderOrcamentoItens(); }
+
+        function salvarOrcamento() {
+            const idHidden = document.getElementById('orc-id-hidden').value;
+            const cliente = document.getElementById('orc-cliente').value;
+            if (!cliente || orcamentoItensTemp.length === 0) { showToast("Preencha cliente e adicione itens.", "error"); return; }
+
+            const total = orcamentoItensTemp.reduce((acc, i) => acc + i.val, 0);
+
+            let orcObj = {
+                cliente,
+                contato: document.getElementById('orc-contato').value,
+                itens: orcamentoItensTemp,
+                total: total,
+                data: new Date().toLocaleDateString('pt-BR'),
+                status: 'Pendente'
+            };
+
+            if (idHidden) {
+                const idx = db.orcamentos.findIndex(o => o.id == idHidden);
+                orcObj.id = parseInt(idHidden);
+                db.orcamentos[idx] = orcObj;
+            } else {
+                orcObj.id = generateId('orc');
+                db.orcamentos.unshift(orcObj);
+            }
+            saveData(); renderOrcamentos(); atualizarDashboard(); fecharModal('modal-orcamento');
+            showToast("Orçamento salvo!");
+        }
+
+        function renderOrcamentos() {
+            const tbody = document.getElementById('lista-orcamentos');
+            tbody.innerHTML = "";
+            db.orcamentos.forEach(orc => {
+                let badge = orc.status === 'Aprovado' ? 'bg-aprovado' : 'bg-pendente';
+                let btnAprovar = orc.status === 'Pendente' ? `<button class="btn btn-sm btn-success" title="Aprovar e Gerar OS" onclick="solicitarAprovacaoOrc(${orc.id})"><i class="fas fa-check"></i></button>` : '';
+
+                tbody.innerHTML += `<tr>
+                    <td>#${padId(orc.id)}</td>
+                    <td>${orc.cliente}</td>
+                    <td>R$ ${orc.total.toFixed(2)}</td>
+                    <td>${orc.data}</td>
+                    <td><span class="badge ${badge}">${orc.status}</span></td>
+                    <td style="display:flex; gap:5px;">
+                        <button class="btn btn-sm btn-primary" onclick="abrirModalOrcamento(${orc.id})"><i class="fas fa-eye"></i></button>
+                        ${btnAprovar}
+                    </td>
+                </tr>`;
+            });
+        }
+
+        function solicitarAprovacaoOrc(id) {
+            abrirConfirmacao("Deseja aprovar este orçamento e gerar uma Ordem de Serviço automaticamente?", () => {
+                aprovarOrcamentoReal(id);
+            });
+        }
+
+        function aprovarOrcamentoReal(id) {
+            const orc = db.orcamentos.find(o => o.id === id);
+            orc.status = 'Aprovado';
+
+            const descServicos = orc.itens.map(i => `${i.desc} (R$ ${i.val.toFixed(2)})`).join('\n');
+            const novaOs = {
+                id: generateId('os'),
+                cliente: orc.cliente,
+                contato: orc.contato,
+                aparelho: "Ref. Orçamento #" + padId(orc.id),
+                defeito: "SERVIÇOS APROVADOS VIA ORÇAMENTO:\n" + descServicos,
+                status: 'Aguardando Peça',
+                valor: orc.total,
+                data: new Date().toLocaleDateString('pt-BR')
+            };
+
+            db.os.unshift(novaOs);
+            saveData();
+            renderOrcamentos();
+            renderOS();
+            renderSelectOSPDV();
+            atualizarDashboard();
+            showToast(`OS #${padId(novaOs.id)} gerada com sucesso!`);
+            nav('os', document.querySelectorAll('.menu-item')[2]);
+        }
+
+        // --- IMPRESSÃO ORÇAMENTO ---
+        function imprimirOrcamento() {
+            const id = document.getElementById('orc-id-hidden').value;
+            const orc = db.orcamentos.find(o => o.id == id);
+
+            preencherCabecalhoA4();
+            document.getElementById('a4-titulo-doc').innerText = `ORÇAMENTO Nº ${padId(orc.id)}`;
+            document.getElementById('a4-assinaturas').style.display = 'flex';
+
+            let linhas = "";
+            orc.itens.forEach(i => {
+                linhas += `<tr><td>${i.desc}</td><td style="text-align:right">R$ ${i.val.toFixed(2)}</td></tr>`;
+            });
+
+            const html = `
+                <div class="a4-section">
+                    <div class="a4-section-title">CLIENTE</div>
+                    <div><b>Nome:</b> ${orc.cliente}</div>
+                    <div><b>Contato:</b> ${orc.contato}</div>
+                </div>
+                <div class="a4-section">
+                    <div class="a4-section-title">ITENS DO ORÇAMENTO</div>
+                    <table class="a4-table">
+                        <thead><tr><th>DESCRIÇÃO</th><th style="width:150px; text-align:right">VALOR</th></tr></thead>
+                        <tbody>${linhas}</tbody>
+                    </table>
+                    <div class="a4-total-area">TOTAL: R$ ${orc.total.toFixed(2)}</div>
+                </div>
+                <div style="font-size:11px; margin-top:20px; color:#555;">
+                    * Orçamento válido por 10 dias.<br>
+                    * A aprovação deste orçamento implica na aceitação dos serviços descritos.
+                </div>
+            `;
+            document.getElementById('a4-conteudo-dinamico').innerHTML = html;
+            document.getElementById('a4-termos').innerHTML = "";
+
+            gerarPDFA4(`Orcamento_${padId(orc.id)}`);
+        }
+
+        // --- SISTEMA OS ---
+        function abrirModalOS(id = null) {
+            const modal = document.getElementById('modal-os-form');
+            modal.style.display = 'flex'; setTimeout(() => modal.classList.add('show'), 10);
+
+            const selServ = document.getElementById('os-servico-preset');
+            selServ.innerHTML = '<option value="">-- Selecione para preencher --</option>';
+            db.servicos.forEach(s => selServ.innerHTML += `<option value="${s}">${s}</option>`);
+
+            if (id) {
+                const os = db.os.find(o => o.id === id);
+                document.getElementById('os-id-hidden').value = os.id;
+                document.getElementById('os-cliente').value = os.cliente;
+                document.getElementById('os-contato').value = os.contato;
+                document.getElementById('os-aparelho').value = os.aparelho;
+                document.getElementById('os-defeito').value = os.defeito;
+                document.getElementById('os-status').value = os.status;
+                document.getElementById('os-valor').value = os.valor;
+                document.getElementById('btn-print-os').style.display = 'inline-flex';
+            } else {
+                document.getElementById('os-id-hidden').value = "";
+                document.getElementById('os-cliente').value = "";
+                document.getElementById('os-contato').value = "";
+                document.getElementById('os-aparelho').value = "";
+                document.getElementById('os-defeito').value = "";
+                document.getElementById('os-status').value = "Pendente";
+                document.getElementById('os-valor').value = "0.00";
+                document.getElementById('btn-print-os').style.display = 'none';
+            }
+        }
+
+        function aplicarServicoPreset() {
+            const val = document.getElementById('os-servico-preset').value;
+            if (val) document.getElementById('os-defeito').value = val + " - ";
+        }
+
+        function salvarOS() {
+            const idHidden = document.getElementById('os-id-hidden').value;
+            const cliente = document.getElementById('os-cliente').value;
+            if (!cliente) { showToast("Nome do cliente obrigatório", "error"); return; }
+
+            let osObj = {
+                cliente,
+                contato: document.getElementById('os-contato').value,
+                aparelho: document.getElementById('os-aparelho').value,
+                defeito: document.getElementById('os-defeito').value,
+                status: document.getElementById('os-status').value,
+                valor: parseFloat(document.getElementById('os-valor').value),
+                data: new Date().toLocaleDateString('pt-BR')
+            };
+
+            if (idHidden) {
+                const idx = db.os.findIndex(o => o.id == idHidden);
+                osObj.id = parseInt(idHidden);
+                db.os[idx] = osObj;
+            } else {
+                osObj.id = generateId('os');
+                db.os.unshift(osObj);
+            }
+            saveData(); renderOS(); renderSelectOSPDV(); atualizarDashboard(); fecharModal('modal-os-form');
+            showToast("OS Salva!");
+        }
+
+        // --- PDV ---
+        function checkParcelas() {
+            const metodo = document.getElementById('pdv-pgto-metodo').value;
+            const div = document.getElementById('div-parcelas');
+            if (metodo === 'Cartão Crédito') {
+                div.style.display = 'block';
+            } else {
+                div.style.display = 'none';
+                document.getElementById('pdv-parcelas-qtd').value = 1;
+            }
+        }
+
+        function addCarrinho() {
+            const id = parseInt(document.getElementById('pdv-prod').value);
+            const qtd = parseInt(document.getElementById('pdv-qtd').value);
+            const prod = db.produtos.find(p => p.id === id);
+            if (!prod) return;
+            const noCarrinho = carrinho.find(i => i.id === id && i.tipo === 'PRODUTO');
+            const qtdCarrinho = noCarrinho ? noCarrinho.qtd : 0;
+            if (qtd + qtdCarrinho > prod.qtd) { showToast("Estoque insuficiente!", "error"); return; }
+            if (noCarrinho) { noCarrinho.qtd += qtd; noCarrinho.total = noCarrinho.qtd * prod.preco; }
+            else { carrinho.push({ id: prod.id, nome: prod.nome, preco: prod.preco, qtd, total: prod.preco * qtd, tipo: 'PRODUTO' }); }
+            renderCarrinho();
+        }
+
+        function addOsAoCarrinho() {
+            const osId = parseInt(document.getElementById('pdv-os-select').value);
+            if (!osId) return;
+            if (carrinho.find(i => i.ref_id === osId && i.tipo === 'OS')) { showToast("OS já inclusa!", "error"); return; }
+            const os = db.os.find(o => o.id === osId);
+            if (document.getElementById('pdv-cliente-nome').value === "") {
+                document.getElementById('pdv-cliente-nome').value = os.cliente;
+            }
+            carrinho.push({ id: Date.now(), ref_id: os.id, nome: `Pagamento OS #${padId(os.id)}`, preco: os.valor, qtd: 1, total: os.valor, tipo: 'OS' });
+            renderCarrinho();
+        }
+
+        function renderCarrinho() {
+            const lista = document.getElementById('pdv-lista');
+            lista.innerHTML = "";
+            let total = 0;
+            carrinho.forEach((item, idx) => {
+                total += item.total;
+                let icone = item.tipo === 'OS' ? '<i class="fas fa-tools"></i>' : '<i class="fas fa-box"></i>';
+                lista.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #eee;">
+                    <div>${icone} <strong>${item.nome}</strong><br><small>${item.qtd}x R$ ${item.preco.toFixed(2)}</small></div>
+                    <div style="text-align:right;">R$ ${item.total.toFixed(2)} <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="carrinho.splice(${idx},1); renderCarrinho()"></i></div>
+                </div>`;
+            });
+            document.getElementById('pdv-total').innerText = "R$ " + total.toFixed(2);
+            document.getElementById('count-itens').innerText = carrinho.length;
+        }
+
+        function preFinalizarVenda() {
+            if (carrinho.length === 0) return;
+            const clienteNome = document.getElementById('pdv-cliente-nome').value || "Consumidor Final";
+            const idVenda = generateId('venda');
+            const pgtoMetodo = document.getElementById('pdv-pgto-metodo').value;
+            const parcelas = parseInt(document.getElementById('pdv-parcelas-qtd').value);
+
+            let pgtoDescricao = pgtoMetodo;
+            if (pgtoMetodo === 'Cartão Crédito' && parcelas > 1) {
+                pgtoDescricao += ` (${parcelas}x)`;
+            }
+
+            carrinho.forEach(item => {
+                if (item.tipo === 'PRODUTO') {
+                    const p = db.produtos.find(pd => pd.id === item.id);
+                    if (p) p.qtd -= item.qtd;
+                }
+                if (item.tipo === 'OS') {
+                    const o = db.os.find(os => os.id === item.ref_id);
+                    if (o) o.status = 'Entregue';
+                }
+            });
+
+            const venda = {
+                id: idVenda,
+                cliente: clienteNome,
+                data: new Date().toLocaleDateString('pt-BR'),
+                hora: new Date().toLocaleTimeString('pt-BR'),
+                itens: [...carrinho],
+                total: carrinho.reduce((acc, i) => acc + i.total, 0),
+                pgto: pgtoDescricao,
+                parcelas: (pgtoMetodo === 'Cartão Crédito' ? parcelas : 1)
+            };
+
+            db.vendas.unshift(venda);
+            ultimaVendaCache = venda;
+            carrinho = [];
+            document.getElementById('pdv-cliente-nome').value = "";
+            document.getElementById('pdv-parcelas-qtd').value = "1";
+            checkParcelas(); // Reset ui parcelas
+
+            saveData(); renderEstoque(); renderSelectOSPDV(); renderOS(); renderCarrinho(); renderUltimasVendas(); atualizarDashboard();
+
+            document.getElementById('msg-sucesso-id').innerText = `Venda #${padId(idVenda)}`;
+            const modal = document.getElementById('modal-sucesso');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // --- AUXILIARES GERAIS ---
+        function renderEstoque() {
+            const tbody = document.getElementById('tabela-estoque'); tbody.innerHTML = "";
+            db.produtos.forEach(p => { tbody.innerHTML += `<tr><td>${padId(p.id)}</td><td>${p.nome}</td><td>R$ ${p.preco.toFixed(2)}</td><td>${p.qtd}</td><td><button class="btn btn-sm btn-danger" onclick="excluirProd(${p.id})"><i class="fas fa-trash"></i></button></td></tr>`; });
+            renderSelectPDV();
+        }
+        function renderOS() {
+            const tbody = document.getElementById('lista-os'); tbody.innerHTML = "";
+            db.os.forEach(os => {
+                let badge = os.status === 'Pronto' ? 'bg-pronto' : os.status === 'Entregue' ? 'bg-entregue' : os.status === 'Em Análise' ? 'bg-analise' : 'bg-pendente';
+                tbody.innerHTML += `<tr><td>#${padId(os.id)}</td><td>${os.cliente}</td><td>${os.aparelho}</td><td><span class="badge ${badge}">${os.status}</span></td><td>R$ ${os.valor.toFixed(2)}</td><td><button class="btn btn-sm btn-primary" onclick="abrirModalOS(${os.id})"><i class="fas fa-edit"></i></button></td></tr>`;
+            });
+        }
+        function renderUltimasVendas() {
+            const div = document.getElementById('lista-vendas-dashboard'); div.innerHTML = "";
+            db.vendas.slice(0, 5).forEach(v => {
+                div.innerHTML += `<div style="background:#f8fafc; padding:10px; margin-bottom:5px; border-radius:5px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+                    <span><b>#${padId(v.id)}</b> (${v.cliente})</span>
+                    <span>R$ ${v.total.toFixed(2)}</span>
+                    <button class="btn btn-sm btn-outline" onclick="imprimirCupom(${v.id})"><i class="fas fa-file"></i></button>
+                </div>`;
+            });
+        }
+        function renderSelectPDV() {
+            const sel = document.getElementById('pdv-prod'); sel.innerHTML = "";
+            db.produtos.forEach(p => { sel.innerHTML += `<option value="${p.id}" ${p.qtd <= 0 ? 'disabled' : ''}>${p.nome} - R$ ${p.preco.toFixed(2)}</option>`; });
+        }
+        function renderSelectOSPDV() {
+            const sel = document.getElementById('pdv-os-select'); sel.innerHTML = '<option value="">-- Selecione --</option>';
+            db.os.filter(o => o.status !== 'Entregue' && o.valor > 0).forEach(o => { sel.innerHTML += `<option value="${o.id}">#${padId(o.id)} - ${o.cliente}</option>`; });
+        }
+        function renderListaServicosConfig() {
+            const ul = document.getElementById('lista-servicos-config'); ul.innerHTML = "";
+            db.servicos.forEach((s, idx) => { ul.innerHTML += `<li style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee;">${s} <i class="fas fa-trash" style="color:red; cursor:pointer;" onclick="rmServicoCadastro(${idx})"></i></li>`; });
+        }
+        function addServicoCadastro() {
+            const val = document.getElementById('novo-servico-nome').value;
+            if (val) { db.servicos.push(val); saveData(); renderListaServicosConfig(); document.getElementById('novo-servico-nome').value = ""; }
+        }
+        function rmServicoCadastro(idx) { db.servicos.splice(idx, 1); saveData(); renderListaServicosConfig(); }
+
+        function abrirModalProduto() {
+            const modal = document.getElementById('modal-produto');
+            modal.style.display = 'flex'; setTimeout(() => modal.classList.add('show'), 10);
+            document.getElementById('prod-nome').value = "";
+            document.getElementById('prod-preco').value = "";
+            document.getElementById('prod-qtd').value = "";
+            document.getElementById('prod-min').value = "5";
+        }
+
+        function salvarProduto() {
+            const nome = document.getElementById('prod-nome').value; const preco = parseFloat(document.getElementById('prod-preco').value); const qtd = parseInt(document.getElementById('prod-qtd').value); const min = parseInt(document.getElementById('prod-min').value);
+            if (!nome) return;
+            db.produtos.push({ id: generateId('prod'), nome, preco, qtd, min }); saveData(); renderEstoque(); fecharModal('modal-produto');
+        }
+
+        function excluirProd(id) {
+            abrirConfirmacao("Tem certeza que deseja excluir este produto?", () => {
+                db.produtos = db.produtos.filter(p => p.id !== id);
+                saveData();
+                renderEstoque();
+            });
+        }
+
+        function atualizarDashboard() {
+            document.getElementById('dash-vendas').innerText = "R$ " + db.vendas.filter(v => v.data === new Date().toLocaleDateString('pt-BR')).reduce((acc, v) => acc + v.total, 0).toFixed(2);
+            document.getElementById('dash-os-pendente').innerText = db.os.filter(o => o.status !== 'Entregue').length;
+            document.getElementById('dash-orc-pendente').innerText = db.orcamentos.filter(o => o.status === 'Pendente').length;
+        }
+
+        function carregarConfigUI() {
+            document.getElementById('cfg-nome').value = db.config.nome;
+            document.getElementById('cfg-cnpj').value = db.config.cnpj || "";
+            document.getElementById('cfg-end').value = db.config.end;
+            document.getElementById('cfg-tel').value = db.config.tel;
+            document.getElementById('cfg-footer').value = db.config.msg;
+        }
+
+        function salvarConfig() {
+            db.config.nome = document.getElementById('cfg-nome').value;
+            db.config.cnpj = document.getElementById('cfg-cnpj').value;
+            db.config.end = document.getElementById('cfg-end').value;
+            db.config.tel = document.getElementById('cfg-tel').value;
+            db.config.msg = document.getElementById('cfg-footer').value;
+            saveData(); showToast("Salvo!");
+        }
+
+        function fecharModal(id) { document.getElementById(id).classList.remove('show'); setTimeout(() => document.getElementById(id).style.display = 'none', 300); }
+
+        function showToast(msg, type = 'success') {
+            const b = document.createElement('div'); b.className = `toast ${type}`; b.innerHTML = `<div><strong>${type === 'success' ? 'Ok' : 'Ops'}</strong><small>${msg}</small></div>`;
+            document.getElementById('toast-container').appendChild(b); setTimeout(() => b.remove(), 3000);
+        }
+
+        // --- LÓGICA DE IMPRESSÃO A4 ---
+        function preencherCabecalhoA4() {
+            const elNome = document.getElementById('a4-empresa-nome');
+            const elEnd = document.getElementById('a4-empresa-end');
+            const elTel = document.getElementById('a4-empresa-tel');
+
+            if (elNome) elNome.innerText = db.config.nome || "Empresa";
+            if (elEnd) elEnd.innerText = db.config.end || "";
+            if (elTel) elTel.innerText = db.config.tel || "";
+
+            const cnpjVal = db.config.cnpj ? db.config.cnpj.trim() : "";
+            const wrapperCnpj = document.getElementById('a4-wrapper-cnpj');
+            const elCnpj = document.getElementById('a4-empresa-cnpj');
+
+            if (wrapperCnpj && elCnpj) {
+                if (cnpjVal !== "") {
+                    elCnpj.innerText = cnpjVal;
+                    wrapperCnpj.style.display = 'inline';
+                } else {
+                    wrapperCnpj.style.display = 'none';
+                }
+            }
+
+            document.getElementById('a4-data-emissao').innerText = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('a4-hora-emissao').innerText = new Date().toLocaleTimeString('pt-BR');
+
+            const imgSidebar = document.querySelector('#sidebar-logo-container img');
+            const imgPrint = document.getElementById('a4-logo-img');
+            const divPrintLogo = document.getElementById('a4-logo-container');
+
+            if (divPrintLogo && imgPrint) {
+                if (imgSidebar && imgSidebar.src && imgSidebar.style.display !== 'none') {
+                    imgPrint.src = imgSidebar.src;
+                    divPrintLogo.style.display = 'flex';
+                } else {
+                    divPrintLogo.style.display = 'none';
+                }
+            }
+        }
+
+        function imprimirCupom(vendaId) {
+            const venda = db.vendas.find(v => v.id === vendaId);
+            preencherCabecalhoA4();
+            document.getElementById('a4-titulo-doc').innerText = `RECIBO DE VENDA Nº ${padId(venda.id)}`;
+            document.getElementById('a4-assinaturas').style.display = 'none';
+
+            let linhasItens = "";
+            venda.itens.forEach(i => {
+                linhasItens += `<tr><td>${i.nome}</td><td>${i.qtd}</td><td style="text-align:right">R$ ${i.preco.toFixed(2)}</td><td style="text-align:right">R$ ${i.total.toFixed(2)}</td></tr>`;
+            });
+
+            // Info de parcelamento se houver
+            let infoPagamento = `Forma de Pagamento: ${venda.pgto}`;
+            if (venda.parcelas > 1) {
+                let valParcela = venda.total / venda.parcelas;
+                infoPagamento += `<br>Parcelamento: ${venda.parcelas}x de R$ ${valParcela.toFixed(2)}`;
+            }
+
+            const html = `
+                <div class="a4-section">
+                    <div class="a4-section-title">DADOS DO CLIENTE</div>
+                    <div><b>Nome:</b> ${venda.cliente}</div>
+                </div>
+                <div class="a4-section">
+                    <div class="a4-section-title">DETALHES DA COMPRA</div>
+                    <table class="a4-table">
+                        <thead><tr><th>DESCRIÇÃO</th><th>QTD</th><th>V. UNIT</th><th>TOTAL</th></tr></thead>
+                        <tbody>${linhasItens}</tbody>
+                    </table>
+                    <div class="a4-total-area">TOTAL PAGO: R$ ${venda.total.toFixed(2)}</div>
+                    <div style="text-align:right; font-size:12px; margin-top:5px;">${infoPagamento}</div>
+                </div>
+            `;
+
+            document.getElementById('a4-conteudo-dinamico').innerHTML = html;
+            document.getElementById('a4-termos').innerHTML = `<strong>MENSAGEM:</strong> ${db.config.msg}`;
+            fecharModal('modal-sucesso');
+            gerarPDFA4(`Recibo_Venda_${padId(venda.id)}`);
+        }
+
+        function imprimirOS() {
+            const id = document.getElementById('os-id-hidden').value;
+            const os = db.os.find(o => o.id == id);
+            preencherCabecalhoA4();
+            document.getElementById('a4-titulo-doc').innerText = `ORDEM DE SERVIÇO Nº ${padId(os.id)}`;
+            document.getElementById('a4-assinaturas').style.display = 'flex';
+
+            const html = `
+                <div class="a4-section">
+                    <div class="a4-section-title">DADOS DO CLIENTE</div>
+                    <div class="a4-grid-2">
+                        <div class="a4-field"><span class="a4-label">Nome:</span> ${os.cliente}</div>
+                        <div class="a4-field"><span class="a4-label">Contato:</span> ${os.contato}</div>
+                    </div>
+                </div>
+                <div class="a4-section">
+                    <div class="a4-section-title">EQUIPAMENTO & SERVIÇO</div>
+                    <div class="a4-field"><span class="a4-label">Aparelho/Modelo:</span> ${os.aparelho}</div>
+                    <div class="a4-field"><span class="a4-label">Defeito/Serviço:</span><br> <pre style="font-family:inherit; white-space:pre-wrap;">${os.defeito}</pre></div>
+                    <div class="a4-field" style="margin-top:10px;"><span class="a4-label">Status Atual:</span> ${os.status}</div>
+                </div>
+                <div class="a4-total-area">VALOR: R$ ${os.valor.toFixed(2)}</div>
+            `;
+            document.getElementById('a4-conteudo-dinamico').innerHTML = html;
+            document.getElementById('a4-termos').innerHTML = `<strong>TERMOS:</strong> Garantia de 90 dias sobre serviços.`;
+            gerarPDFA4(`OS_${padId(os.id)}`);
+        }
+
+        function gerarPDFA4(nomeArquivo) {
+            const element = document.getElementById('print-a4-container');
+            element.style.display = 'block';
+            // Scale aumentado para 3 para melhorar a qualidade (1000% melhor que o padrão 1)
+            const opt = { margin: 0, filename: nomeArquivo + '.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 3, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
+        }
+    </script>
+</body>
+
+</html>

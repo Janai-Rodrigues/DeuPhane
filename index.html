@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeuPhane Assistec - Sistema de Gestão</title>
+    <title>DeuPhane Assistec</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -21,6 +22,7 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --purple: #8b5cf6;
             --bg-light: #f8fafc;
             --white: #ffffff;
             --dark: #0f172a;
@@ -480,8 +482,10 @@
             border-bottom: 1px solid var(--border);
         }
 
+        /* Compact Rows */
         td {
-            padding: 16px 20px;
+            padding: 10px 15px;
+            /* Reduced padding */
             border-bottom: 1px solid var(--border);
             background: var(--white);
             font-weight: 500;
@@ -559,6 +563,16 @@
             background: #f8fafc;
         }
 
+        /* Cursor pointer and smooth arrow transition */
+        .clickable-row i.fa-chevron-down {
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
         .details-row {
             display: none;
             background: #f8fafc;
@@ -586,7 +600,7 @@
         }
 
         .status-badge {
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -625,7 +639,7 @@
 
         /* Buttons & Inputs */
         .btn {
-            padding: 10px 24px;
+            padding: 8px 16px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
@@ -634,7 +648,7 @@
             align-items: center;
             gap: 10px;
             transition: all 0.2s;
-            font-size: 0.95rem;
+            font-size: 0.90rem;
         }
 
         .btn:hover {
@@ -669,6 +683,42 @@
             background: #dc2626;
         }
 
+        .btn-purple {
+            background: var(--purple);
+            color: white;
+        }
+
+        .btn-purple:hover {
+            background: #7c3aed;
+        }
+
+
+        /* New transparent trash button */
+        .btn-icon-danger {
+            background: transparent;
+            color: var(--danger);
+            padding: 8px;
+        }
+
+        .btn-icon-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* New transparent edit button */
+        .btn-icon-edit {
+            background: transparent;
+            color: var(--primary);
+            padding: 8px;
+        }
+
+        .btn-icon-edit:hover {
+            background: rgba(37, 99, 235, 0.1);
+            box-shadow: none;
+            transform: none;
+        }
+
         .btn-outline-danger {
             background: transparent;
             border: 2px solid var(--danger);
@@ -694,13 +744,13 @@
         }
 
         .btn-sm {
-            padding: 8px 14px;
-            font-size: 0.85rem;
+            padding: 6px 12px;
+            font-size: 0.8rem;
             border-radius: 6px;
         }
 
         .btn-icon {
-            padding: 8px;
+            padding: 6px;
             aspect-ratio: 1;
             display: flex;
             align-items: center;
@@ -782,12 +832,27 @@
             animation: slideIn 0.3s ease;
         }
 
+        .cart-total-container {
+            margin-top: auto;
+            text-align: right;
+        }
+
         .cart-total {
             font-size: 2rem;
             font-weight: 800;
-            text-align: right;
-            margin-top: auto;
             color: var(--primary);
+        }
+
+        .cart-subtotal {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .cart-discount-display {
+            font-size: 0.9rem;
+            color: var(--success);
+            margin-bottom: 5px;
         }
 
         /* Modals & Toasts */
@@ -888,6 +953,33 @@
             display: block;
         }
 
+        /* Toggle Switch for discount */
+        .toggle-container {
+            display: flex;
+            background: #e2e8f0;
+            border-radius: 8px;
+            padding: 4px;
+            width: fit-content;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+            transition: 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -934,9 +1026,9 @@
 
             .print-document {
                 width: 100%;
-                max-width: 210mm;
                 margin: 0 auto;
-                padding: 20mm;
+                /* Reduced margins */
+                padding: 10mm;
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
                 color: #333;
                 background: white;
@@ -1065,6 +1157,19 @@
                 text-align: center;
                 font-weight: 500;
             }
+
+
+        }
+
+        .nav-item,
+        .clickable-row,
+        .btn,
+        .date-nav-btn,
+        .brand {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
     </style>
 </head>
@@ -1130,13 +1235,12 @@
                 <div>DeuPhane <span>Assistec</span></div>
             </div>
             <nav>
-                <div class="nav-item active" onclick="navTo('overview')"><i class="fas fa-chart-pie"></i> Visão Geral
-                </div>
+                <div class="nav-item" onclick="navTo('overview')"><i class="fas fa-chart-pie"></i> Visão Geral</div>
+                <div class="nav-item" onclick="navTo('pos')"><i class="fas fa-cash-register"></i> PDV - Vendas</div>
                 <div class="nav-item" onclick="navTo('quotes')"><i class="fas fa-file-invoice-dollar"></i> Orçamentos
                 </div>
                 <div class="nav-item" onclick="navTo('workorders')"><i class="fas fa-clipboard-list"></i> Ordens de
                     Serviço</div>
-                <div class="nav-item" onclick="navTo('pos')"><i class="fas fa-cash-register"></i> PDV - Vendas</div>
                 <div class="nav-item" onclick="navTo('inventory')"><i class="fas fa-boxes"></i> Estoque</div>
                 <div class="nav-item" onclick="navTo('settings')"><i class="fas fa-cog"></i> Configurações</div>
                 <div class="nav-item logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Sair</div>
@@ -1144,7 +1248,7 @@
         </aside>
 
         <main class="main-content">
-            <div id="overview" class="section active">
+            <div id="overview" class="section">
                 <div class="header-section">
                     <div>
                         <h2 class="section-title">Visão Geral</h2>
@@ -1278,7 +1382,7 @@
                 </div>
             </div>
 
-            <div id="pos" class="section">
+            <div id="pos" class="section active">
                 <div class="pos-layout">
                     <div class="pos-products">
                         <div class="card">
@@ -1286,7 +1390,7 @@
                             <div style="margin-bottom: 15px;"><input type="text" id="search-pos-product"
                                     class="search-input" placeholder="Digite para buscar produtos..."
                                     onkeyup="filterSelectOptions('pos-stock-select', 'search-pos-product')"
-                                    style="width: 100%;"></div>
+                                    style="width: 100%;" autocomplete="off"></div>
                             <div class="form-group">
                                 <label><i class="fas fa-box"></i> Produtos & Serviços do Estoque</label>
                                 <div style="display: flex; gap: 10px;">
@@ -1300,8 +1404,8 @@
                             <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
                             <div style="margin-bottom: 15px;"><input type="text" id="search-pos-os" class="search-input"
                                     placeholder="Filtrar lista de OS..."
-                                    onkeyup="filterSelectOptions('pos-os-select', 'search-pos-os')"
-                                    style="width: 100%;"></div>
+                                    onkeyup="filterSelectOptions('pos-os-select', 'search-pos-os')" style="width: 100%;"
+                                    autocomplete="off"></div>
                             <div class="form-group">
                                 <label><i class="fas fa-clipboard-check"></i> Importar OS Aprovada</label>
                                 <div style="display: flex; gap: 10px;">
@@ -1323,6 +1427,14 @@
                             <div style="text-align: center; color: var(--secondary); margin-top: 50px;">Carrinho vazio
                             </div>
                         </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <button class="btn btn-purple" style="width: 100%; justify-content: center;"
+                                onclick="openDiscountModal()">
+                                <i class="fas fa-tags"></i> Aplicar Desconto
+                            </button>
+                        </div>
+
                         <div
                             style="background: var(--bg-light); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
                             <div class="form-group">
@@ -1351,7 +1463,13 @@
                                     <option value="12">12x</option>
                                 </select>
                             </div>
-                            <div class="cart-total" id="pos-total">R$ 0,00</div>
+                            <div class="cart-total-container">
+                                <div class="cart-subtotal" id="pos-subtotal" style="display: none;">Subtotal: R$ 0,00
+                                </div>
+                                <div class="cart-discount-display" id="pos-discount-display" style="display: none;">-
+                                    Desconto: R$ 0,00</div>
+                                <div class="cart-total" id="pos-total">R$ 0,00</div>
+                            </div>
                         </div>
                         <button class="btn btn-success"
                             style="width: 100%; justify-content: center; margin-top: 15px; padding: 16px; font-size: 1.1rem;"
@@ -1363,7 +1481,7 @@
             <div id="inventory" class="section">
                 <div class="header-section">
                     <h2 class="section-title">Estoque & Serviços</h2><button class="btn btn-primary"
-                        onclick="openModal('modal-item')"><i class="fas fa-plus"></i> Novo Item</button>
+                        onclick="openModalItem()"><i class="fas fa-plus"></i> Novo Item</button>
                 </div>
                 <div class="filter-controls"><input type="text" id="search-inventory" class="search-input"
                         placeholder="Buscar Item..." onkeyup="filterTable('inventory-table', 'search-inventory', [1])"
@@ -1375,6 +1493,7 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Tipo</th>
+                                <th>Estoque</th>
                                 <th>Preço Venda</th>
                                 <th>Ações</th>
                             </tr>
@@ -1392,6 +1511,8 @@
                 <div class="settings-tabs">
                     <button class="settings-tab-btn active" onclick="switchSettingsTab('company')">Dados da
                         Empresa</button>
+                    <button class="settings-tab-btn" onclick="switchSettingsTab('security')">Segurança /
+                        Descontos</button>
                     <button class="settings-tab-btn" onclick="switchSettingsTab('users')">Gestão de Usuários</button>
                 </div>
 
@@ -1409,6 +1530,22 @@
                                 placeholder="Rua, Número, Bairro, Cidade - UF"></div>
                         <div style="text-align: right; margin-top: 2rem;"><button class="btn btn-primary"
                                 onclick="saveSettings()"><i class="fas fa-save"></i> Salvar Dados</button></div>
+                    </div>
+                </div>
+
+                <div id="settings-security" class="settings-content-wrapper">
+                    <div class="card" style="max-width: 500px;">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--purple);">Segurança do PDV</h3>
+                        <p style="color: var(--secondary); margin-bottom: 1rem;">Defina a senha necessária para aplicar
+                            descontos no momento da venda.</p>
+                        <div class="form-group">
+                            <label><i class="fas fa-key"></i> Senha de Gerente (Descontos)</label>
+                            <input type="password" id="conf-discount-pass" placeholder="Digite a nova senha...">
+                        </div>
+                        <div style="text-align: right; margin-top: 2rem;">
+                            <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> Salvar
+                                Senha</button>
+                        </div>
                     </div>
                 </div>
 
@@ -1460,20 +1597,77 @@
         </div>
     </div>
 
+    <div id="modal-discount" class="modal" style="z-index: 7200;">
+        <div class="modal-content" style="width: 450px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Aplicar Desconto</h3>
+                <button class="modal-close" onclick="closeModals()"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div id="discount-step-auth">
+                <p style="margin-bottom: 1rem; color: var(--secondary);">Insira a senha de gerente para liberar o
+                    desconto.</p>
+                <div class="form-group">
+                    <input type="password" id="discount-auth-pass" placeholder="Senha..."
+                        style="text-align: center; font-size: 1.2rem;">
+                </div>
+                <button class="btn btn-primary" style="width: 100%; justify-content: center;"
+                    onclick="verifyDiscountPass()">Liberar Acesso</button>
+            </div>
+
+            <div id="discount-step-config" style="display: none;">
+                <div class="form-group">
+                    <label>Aplicar desconto em:</label>
+                    <select id="discount-scope">
+                        <option value="total">Total da Venda</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de Desconto</label>
+                    <div class="toggle-container">
+                        <button class="toggle-btn active" id="btn-type-money" onclick="setDiscountType('money')">R$
+                            (Valor)</button>
+                        <button class="toggle-btn" id="btn-type-percent" onclick="setDiscountType('percent')">%
+                            (Porcentagem)</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Valor do Desconto</label>
+                    <input type="number" id="discount-value" placeholder="0,00" step="0.01"
+                        style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">
+                </div>
+
+                <button class="btn btn-success" style="width: 100%; justify-content: center; margin-top: 10px;"
+                    onclick="applyDiscount()">
+                    <i class="fas fa-check"></i> Confirmar Desconto
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-item" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Cadastrar Item</h3><button class="modal-close" onclick="closeModals()"><i
-                        class="fas fa-times"></i></button>
+                <h3 class="modal-title" id="modal-item-title">Cadastrar Item</h3><button class="modal-close"
+                    onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="form-group"><label>Tipo de Item</label><select id="item-type">
+            <div class="form-group">
+                <label>Tipo de Item</label>
+                <select id="item-type" onchange="toggleStockInput()">
                     <option value="P">Produto Físico (Peça/Acessório)</option>
                     <option value="S">Serviço (Mão de Obra)</option>
-                </select></div>
+                </select>
+            </div>
             <div class="form-group"><label>Descrição do Item</label><input type="text" id="item-desc"
-                    placeholder="Ex: Tela iPhone X / Mão de Obra Troca"></div>
-            <div class="form-group"><label>Preço de Venda (R$)</label><input type="number" step="0.01" id="item-price"
-                    placeholder="0,00"></div>
+                    placeholder="Ex: Tela iPhone X / Mão de Obra Troca" autocomplete="off"></div>
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex: 1;"><label>Preço de Venda (R$)</label><input type="number"
+                        step="0.01" id="item-price" placeholder="0,00" autocomplete="off"></div>
+                <div class="form-group" id="group-item-qty" style="flex: 1;"><label>Quantidade em Estoque</label><input
+                        type="number" id="item-qty" placeholder="0" value="0" autocomplete="off"></div>
+            </div>
             <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px;"><button
                     class="btn btn-danger" onclick="closeModals()">Cancelar</button><button class="btn btn-success"
                     onclick="saveItem()"><i class="fas fa-save"></i> Salvar Item</button></div>
@@ -1487,8 +1681,10 @@
                         class="fas fa-times"></i></button>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="form-group"><label>Nome do Cliente</label><input type="text" id="quote-client"></div>
-                <div class="form-group"><label>Equipamento/Defeito</label><input type="text" id="quote-device"></div>
+                <div class="form-group"><label>Nome do Cliente</label><input type="text" id="quote-client"
+                        autocomplete="off"></div>
+                <div class="form-group"><label>Equipamento/Defeito</label><input type="text" id="quote-device"
+                        autocomplete="off"></div>
             </div>
             <div class="card" style="padding: 1.5rem; background: var(--bg-light); border: none;">
                 <h4 style="margin-bottom: 1rem;">Adicionar Itens ao Orçamento</h4>
@@ -1550,16 +1746,19 @@
         const db = firebase.firestore();
 
         // --- GLOBAL VARIABLES ---
-        let company = { name: "DeuPhane Assistec", cnpj: "", address: "", phone: "" };
+        let company = { name: "DeuPhane Assistec", cnpj: "", address: "", phone: "", discountPassword: "" };
         let inventory = [];
         let quotes = [];
         let workOrders = [];
         let sales = [];
         let cart = [];
+        let saleGlobalDiscount = { type: 'money', value: 0 }; // Novo: Desconto global na venda
+        let discountTypeSelected = 'money'; // Novo: Controle do modal de desconto
         let tempQuoteItems = [];
         let usersList = [];
         let currentUserName = "";
-        const ADMIN_EMAIL = "gerenciamentojrs@gmail.com";
+        let editingItemId = null;
+        const ADMIN_EMAIL = "admin@gmail.com";
 
         // --- INIT ---
         function init() {
@@ -1678,7 +1877,8 @@
                 setTimeout(() => {
                     document.getElementById('skeleton-screen').style.display = 'none';
                     document.getElementById('app-container').style.display = 'flex';
-                    navTo('workorders');
+                    // ABRE NO PDV POR PADRÃO
+                    navTo('pos');
                 }, 800);
             });
         }
@@ -1688,6 +1888,7 @@
             document.getElementById('conf-cnpj').value = company.cnpj || '';
             document.getElementById('conf-address').value = company.address || '';
             document.getElementById('conf-phone').value = company.phone || '';
+            document.getElementById('conf-discount-pass').value = company.discountPassword || ''; // Carrega senha
             document.querySelector('.brand div').innerHTML = company.name.split(' ')[0] + " <span>" + (company.name.split(' ')[1] || '') + "</span>";
         }
 
@@ -1705,7 +1906,8 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
 
-            const menuIndices = { 'overview': 0, 'quotes': 1, 'workorders': 2, 'pos': 3, 'inventory': 4, 'settings': 5 };
+            // Mapeamento ajustado para a nova ordem visual (Visão Geral primeiro, PDV segundo)
+            const menuIndices = { 'overview': 0, 'pos': 1, 'quotes': 2, 'workorders': 3, 'inventory': 4, 'settings': 5 };
             const navItems = document.querySelectorAll('.sidebar .nav-item');
             if (navItems[menuIndices[sectionId]]) navItems[menuIndices[sectionId]].classList.add('active');
 
@@ -1726,12 +1928,14 @@
             document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.settings-content-wrapper').forEach(c => c.classList.remove('active'));
 
-            // Activate clicked
             if (tab === 'company') {
                 document.querySelectorAll('.settings-tab-btn')[0].classList.add('active');
                 document.getElementById('settings-company').classList.add('active');
-            } else {
+            } else if (tab === 'security') {
                 document.querySelectorAll('.settings-tab-btn')[1].classList.add('active');
+                document.getElementById('settings-security').classList.add('active');
+            } else {
+                document.querySelectorAll('.settings-tab-btn')[2].classList.add('active');
                 document.getElementById('settings-users').classList.add('active');
             }
         }
@@ -1779,31 +1983,41 @@
         function filterSelectOptions(selectId, inputId) {
             const input = document.getElementById(inputId).value.toUpperCase();
             const select = document.getElementById(selectId);
-            const options = select.getElementsByTagName("option");
+            const options = select.options;
+
+            let firstVisibleOption = null;
+
             for (let i = 0; i < options.length; i++) {
-                if (i === 0) continue;
-                const text = options[i].text.toUpperCase();
-                if (text.indexOf(input) > -1) {
-                    options[i].hidden = false;
-                    options[i].style.display = "";
-                } else {
-                    options[i].hidden = true;
-                    options[i].style.display = "none";
+                if (i === 0) continue; // mantém "Selecione"
+
+                const match = options[i].text.toUpperCase().includes(input);
+                options[i].style.display = match ? "" : "none";
+
+                if (match && !firstVisibleOption) {
+                    firstVisibleOption = options[i];
                 }
             }
-            if (select.selectedIndex > 0 && options[select.selectedIndex].hidden) {
+
+            if (firstVisibleOption) {
+                select.value = firstVisibleOption.value;
+            } else {
                 select.value = "";
             }
         }
 
+
         function toggleDetails(rowId) {
             const detailRow = document.getElementById('detail-' + rowId);
+            const arrow = document.getElementById('arrow-' + rowId);
+
             if (detailRow) {
                 if (detailRow.classList.contains('active')) {
                     detailRow.classList.remove('active');
+                    if (arrow) arrow.classList.remove('rotate-180');
                     setTimeout(() => detailRow.style.display = 'none', 300);
                 } else {
                     detailRow.style.display = 'table-row';
+                    if (arrow) arrow.classList.add('rotate-180');
                     setTimeout(() => detailRow.classList.add('active'), 10);
                 }
             }
@@ -1821,8 +2035,6 @@
             const startInput = document.getElementById('overview-date-start');
             const endInput = document.getElementById('overview-date-end');
 
-            // Logic: if current start != end, reset to today then move. 
-            // Or just move start and end by X days. Let's move both by X days.
             let d1 = new Date(startInput.value + "T00:00:00");
             let d2 = new Date(endInput.value + "T00:00:00");
 
@@ -1870,25 +2082,38 @@
 
         function openModal(id) {
             document.getElementById(id).classList.add('active');
-            if (id === 'modal-quote') populateSelects();
-            if (id === 'modal-item') {
-                document.getElementById('item-type').value = 'P';
-                document.getElementById('item-desc').value = '';
-                document.getElementById('item-price').value = '';
+            if (id === 'modal-quote') {
+                populateSelects();
+                // Limpa os campos do orçamento
+                document.getElementById('quote-client').value = '';
+                document.getElementById('quote-device').value = '';
+                document.getElementById('quote-obs').value = '';
+                document.getElementById('quote-item-qtd').value = '1';
+                document.getElementById('temp-quote-total').innerText = "R$ 0,00";
+                tempQuoteItems = [];
+                renderTempQuoteTable();
             }
         }
-        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); }
+        function closeModals() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            editingItemId = null; // Reset edição
+            // Reset discount inputs
+            document.getElementById('discount-step-auth').style.display = 'block';
+            document.getElementById('discount-step-config').style.display = 'none';
+            document.getElementById('discount-auth-pass').value = '';
+            document.getElementById('discount-value').value = '';
+        }
 
         // --- CRUD ACTIONS ---
 
-        // Users (The Challenge)
+        // Users
         function renderUsersTable() {
             const tbody = document.querySelector('#users-table tbody');
             tbody.innerHTML = usersList.map(u => `
                 <tr>
                     <td>${u.name}</td>
                     <td>${u.email}</td>
-                    <td><button class="btn btn-danger btn-sm btn-icon" onclick="deleteUser('${u.uid}')"><i class="fas fa-trash-alt"></i></button></td>
+                    <td><button class="btn btn-icon-danger btn-sm" onclick="deleteUser('${u.uid}')"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>
             `).join('');
         }
@@ -1917,22 +2142,80 @@
                 <tr>
                     <td><strong>${item.id}</strong></td>
                     <td>${item.name}</td>
-                    <td><span class="status-badge ${item.type === 'P' ? 'bg-paid' : 'bg-approved'}">${item.type === 'P' ? 'Produto Físico' : 'Serviço'}</span></td>
+                    <td><span class="status-badge ${item.type === 'P' ? 'bg-paid' : 'bg-approved'}">${item.type === 'P' ? 'Produto' : 'Serviço'}</span></td>
+                    <td>${item.type === 'P' ? item.quantity : '-'}</td>
                     <td><strong>R$ ${item.price.toFixed(2)}</strong></td>
-                    <td><button class="btn btn-danger btn-sm btn-icon" onclick="deleteItem('${item.uid}')"><i class="far fa-trash-alt"></i></button></td>
+                    <td style="display:flex; gap: 5px;">
+                        <button class="btn btn-icon-edit btn-sm" onclick="editItem('${item.uid}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-icon-danger btn-sm" onclick="deleteItem('${item.uid}')"><i class="far fa-trash-alt"></i></button>
+                    </td>
                 </tr>
             `).join('');
         }
+
+        function openModalItem() {
+            editingItemId = null;
+            document.getElementById('modal-item-title').innerText = "Cadastrar Item";
+            document.getElementById('item-type').value = 'P';
+            document.getElementById('item-type').disabled = false;
+            document.getElementById('item-desc').value = '';
+            document.getElementById('item-price').value = '';
+            document.getElementById('item-qty').value = '0';
+            toggleStockInput();
+            openModal('modal-item');
+        }
+
+        function editItem(uid) {
+            const item = inventory.find(i => i.uid === uid);
+            if (!item) return;
+
+            editingItemId = uid;
+            document.getElementById('modal-item-title').innerText = "Editar Item";
+            document.getElementById('item-type').value = item.type;
+            document.getElementById('item-type').disabled = true; // Não muda tipo na edição para não quebrar IDs
+            document.getElementById('item-desc').value = item.name;
+            document.getElementById('item-price').value = item.price;
+            document.getElementById('item-qty').value = item.quantity || 0;
+            toggleStockInput();
+            openModal('modal-item');
+        }
+
+        function toggleStockInput() {
+            const type = document.getElementById('item-type').value;
+            const group = document.getElementById('group-item-qty');
+            if (type === 'P') group.style.display = 'block';
+            else group.style.display = 'none';
+        }
+
         function saveItem() {
             const type = document.getElementById('item-type').value;
             const name = document.getElementById('item-desc').value;
             const price = parseFloat(document.getElementById('item-price').value);
+            const quantity = parseInt(document.getElementById('item-qty').value) || 0;
+
             if (!name || isNaN(price)) return showToast('Preencha os campos.', 'error');
 
-            db.collection('inventory').add({
-                id: generateID(type), type, name, price, created: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => { closeModals(); showToast('Item salvo!'); });
+            const itemData = {
+                name,
+                price,
+                type
+            };
+
+            if (type === 'P') itemData.quantity = quantity;
+
+            if (editingItemId) {
+                // Update
+                db.collection('inventory').doc(editingItemId).update(itemData)
+                    .then(() => { closeModals(); showToast('Item atualizado!'); });
+            } else {
+                // Create
+                itemData.id = generateID(type);
+                itemData.created = firebase.firestore.FieldValue.serverTimestamp();
+                db.collection('inventory').add(itemData)
+                    .then(() => { closeModals(); showToast('Item salvo!'); });
+            }
         }
+
         function deleteItem(uid) {
             showConfirm('Excluir', 'Deseja excluir este item?', () => {
                 db.collection('inventory').doc(uid).delete().then(() => showToast('Excluído.', 'success'));
@@ -1975,7 +2258,7 @@
                     <td><strong>${q.id}</strong></td><td>${q.client}</td><td>${q.date}</td><td>${q.device}</td>
                     <td><strong>R$ ${q.totalValue.toFixed(2)}</strong></td>
                     <td><span class="status-badge ${q.status === 'Pendente' ? 'bg-pending' : 'bg-approved'}">${q.status}</span></td>
-                    <td style="text-align:center;"><i class="fas fa-chevron-down text-secondary"></i></td>
+                    <td style="text-align:center;"><i id="arrow-${q.id}" class="fas fa-chevron-down text-secondary"></i></td>
                 </tr>
                 <tr id="detail-${q.id}" class="details-row">
                     <td colspan="7" style="padding:0;"><div class="details-content">
@@ -2019,7 +2302,7 @@
                 <tr class="clickable-row" onclick="toggleDetails('${os.id}')">
                     <td><strong>${os.id}</strong></td><td>${os.quoteId}</td><td>${os.client}</td><td>${os.device}</td>
                     <td><span class="status-badge ${badge}">${os.status}</span></td>
-                    <td style="text-align:center;"><i class="fas fa-chevron-down text-secondary"></i></td>
+                    <td style="text-align:center;"><i id="arrow-${os.id}" class="fas fa-chevron-down text-secondary"></i></td>
                 </tr>
                 <tr id="detail-${os.id}" class="details-row"><td colspan="6" style="padding:0;"><div class="details-content">
                     <h5>Serviços/Peças:</h5><ul style="padding-left:20px;">${os.items.map(i => `<li>${i.qtd}x ${i.desc}</li>`).join('')}</ul>
@@ -2032,50 +2315,254 @@
         }
         function deleteOS(uid) { showConfirm('Excluir', 'Apagar OS?', () => db.collection('work_orders').doc(uid).delete().then(() => showToast('Excluída.'))); }
 
-        // Sales
+        // --- SALES & POS LOGIC ---
+
         function addToCartFromStock() {
             const select = document.getElementById('pos-stock-select');
             if (!select.value) return showToast('Selecione um produto.', 'error');
             const op = select.options[select.selectedIndex];
-            cart.push({ desc: op.dataset.name, price: parseFloat(op.dataset.price), qtd: 1, total: parseFloat(op.dataset.price), originId: select.value, type: 'STOCK' });
+            // Added discount property
+            cart.push({
+                desc: op.dataset.name,
+                price: parseFloat(op.dataset.price),
+                qtd: 1,
+                total: parseFloat(op.dataset.price),
+                originId: select.value,
+                type: 'STOCK',
+                discount: { type: 'money', value: 0 }
+            });
             select.value = ""; renderCart();
         }
+
         function addToCartFromOS() {
             const select = document.getElementById('pos-os-select');
             const os = workOrders.find(o => o.id === select.value);
             if (!os) return showToast('Selecione uma OS.', 'error');
-            os.items.forEach(i => cart.push({ desc: `[REF. ${os.id}] ${i.desc}`, price: i.price, qtd: i.qtd, total: i.total, originId: os.id, type: 'OS_LINKED', osUid: os.uid }));
+            os.items.forEach(i => cart.push({
+                desc: `[REF. ${os.id}] ${i.desc}`,
+                price: i.price,
+                qtd: i.qtd,
+                total: i.total,
+                originId: os.id,
+                type: 'OS_LINKED',
+                osUid: os.uid,
+                discount: { type: 'money', value: 0 }
+            }));
             select.value = ""; renderCart();
         }
+
         function renderCart() {
-            let total = 0;
+            let subtotal = 0;
+            let totalDiscountVal = 0;
             const container = document.getElementById('pos-cart-items');
-            if (cart.length === 0) container.innerHTML = '<div style="text-align: center; color: var(--secondary); margin-top: 50px;"><i class="fas fa-shopping-cart" style="font-size: 3rem; opacity: 0.3;"></i><p>Carrinho Vazio</p></div>';
-            else container.innerHTML = cart.map((i, idx) => { total += i.total; return `<div class="cart-item"><div><div style="font-weight:600;">${i.desc}</div><small>${i.qtd} x R$ ${i.price.toFixed(2)}</small></div><div style="display:flex;align-items:center;gap:15px;"><strong>R$ ${i.total.toFixed(2)}</strong><i class="fas fa-trash-alt text-danger" style="cursor:pointer;" onclick="cart.splice(${idx},1); renderCart();"></i></div></div>`; }).join('');
-            document.getElementById('pos-total').innerText = "R$ " + total.toFixed(2);
+
+            if (cart.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--secondary); margin-top: 50px;"><i class="fas fa-shopping-cart" style="font-size: 3rem; opacity: 0.3;"></i><p>Carrinho Vazio</p></div>';
+                saleGlobalDiscount = { type: 'money', value: 0 }; // Reset global discount if empty
+            } else {
+                container.innerHTML = cart.map((i, idx) => {
+                    // Item discount calc
+                    let itemTotal = i.price * i.qtd;
+                    let itemDiscount = 0;
+
+                    if (i.discount && i.discount.value > 0) {
+                        if (i.discount.type === 'money') itemDiscount = i.discount.value;
+                        else itemDiscount = itemTotal * (i.discount.value / 100);
+                    }
+
+                    let finalItemTotal = itemTotal - itemDiscount;
+                    if (finalItemTotal < 0) finalItemTotal = 0;
+
+                    subtotal += finalItemTotal; // Subtotal includes item discounts but not global
+
+                    const discountDisplay = itemDiscount > 0 ? `<small style="color:var(--success); display:block;">- R$ ${itemDiscount.toFixed(2)} (${i.discount.type === 'percent' ? i.discount.value + '%' : 'Desc.'})</small>` : '';
+                    const priceDisplay = itemDiscount > 0 ? `<span style="text-decoration:line-through; color:#94a3b8; font-size:0.85rem;">R$ ${itemTotal.toFixed(2)}</span> <strong>R$ ${finalItemTotal.toFixed(2)}</strong>` : `<strong>R$ ${finalItemTotal.toFixed(2)}</strong>`;
+
+                    return `<div class="cart-item">
+                        <div>
+                            <div style="font-weight:600;">${i.desc}</div>
+                            <small>${i.qtd} x R$ ${i.price.toFixed(2)}</small>
+                            ${discountDisplay}
+                        </div>
+                        <div style="display:flex; align-items:center; gap:15px; text-align:right;">
+                            <div>${priceDisplay}</div>
+                            <i class="fas fa-trash-alt text-danger" style="cursor:pointer;" onclick="removeItem(${idx})"></i>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            // Global Discount Calc
+            let globalDiscVal = 0;
+            if (saleGlobalDiscount.value > 0) {
+                if (saleGlobalDiscount.type === 'money') globalDiscVal = saleGlobalDiscount.value;
+                else globalDiscVal = subtotal * (saleGlobalDiscount.value / 100);
+            }
+
+            let finalTotal = subtotal - globalDiscVal;
+            if (finalTotal < 0) finalTotal = 0;
+
+            // UI Update
+            const subtotalEl = document.getElementById('pos-subtotal');
+            const discountEl = document.getElementById('pos-discount-display');
+            const totalEl = document.getElementById('pos-total');
+
+            if (globalDiscVal > 0 || cart.some(i => i.discount.value > 0)) {
+                subtotalEl.style.display = 'block';
+                subtotalEl.innerText = "Subtotal (c/ desc. itens): R$ " + subtotal.toFixed(2);
+
+                if (globalDiscVal > 0) {
+                    discountEl.style.display = 'block';
+                    discountEl.innerText = `- Desconto Global: R$ ${globalDiscVal.toFixed(2)} ${saleGlobalDiscount.type === 'percent' ? '(' + saleGlobalDiscount.value + '%)' : ''}`;
+                } else {
+                    discountEl.style.display = 'none';
+                }
+            } else {
+                subtotalEl.style.display = 'none';
+                discountEl.style.display = 'none';
+            }
+
+            totalEl.innerText = "R$ " + finalTotal.toFixed(2);
         }
+
+        function removeItem(idx) {
+            cart.splice(idx, 1);
+            if (cart.length === 0) saleGlobalDiscount = { type: 'money', value: 0 };
+            renderCart();
+        }
+
+        // --- DISCOUNT LOGIC ---
+        function openDiscountModal() {
+            if (cart.length === 0) return showToast('Adicione itens antes de aplicar desconto.', 'error');
+            openModal('modal-discount');
+        }
+
+        function verifyDiscountPass() {
+            const input = document.getElementById('discount-auth-pass').value;
+
+            // Verifica se a senha está vazia nas configurações
+            if (!company.discountPassword) {
+                // Se não tem senha configurada, avisa para configurar
+                alert("Nenhuma senha de gerente configurada! Configure na aba Configurações.");
+                closeModals();
+                navTo('settings');
+                return;
+            }
+
+            if (input === company.discountPassword) {
+                document.getElementById('discount-step-auth').style.display = 'none';
+                document.getElementById('discount-step-config').style.display = 'block';
+
+                // Populate Item Select
+                const scopeSelect = document.getElementById('discount-scope');
+                scopeSelect.innerHTML = '<option value="total">Total da Venda</option>';
+                cart.forEach((item, idx) => {
+                    scopeSelect.innerHTML += `<option value="${idx}">Item: ${item.desc}</option>`;
+                });
+            } else {
+                showToast('Senha incorreta!', 'error');
+            }
+        }
+
+        function setDiscountType(type) {
+            discountTypeSelected = type;
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            if (type === 'money') document.getElementById('btn-type-money').classList.add('active');
+            else document.getElementById('btn-type-percent').classList.add('active');
+        }
+
+        function applyDiscount() {
+            const scope = document.getElementById('discount-scope').value;
+            const val = parseFloat(document.getElementById('discount-value').value);
+
+            if (isNaN(val) || val < 0) return showToast('Valor inválido.', 'error');
+
+            if (scope === 'total') {
+                saleGlobalDiscount = { type: discountTypeSelected, value: val };
+            } else {
+                // Item Discount
+                const idx = parseInt(scope);
+                if (cart[idx]) {
+                    cart[idx].discount = { type: discountTypeSelected, value: val };
+                }
+            }
+
+            renderCart();
+            closeModals();
+            showToast('Desconto aplicado!');
+        }
+
+        // --- FINALIZE SALE ---
+
         function finalizeSale() {
             if (cart.length === 0) return showToast('Carrinho vazio!', 'error');
-            showConfirm("Finalizar", "Confirmar venda?", () => {
+
+            // Calc Total Again to be safe
+            let subtotal = 0;
+            cart.forEach(i => {
+                let itemTotal = i.price * i.qtd;
+                if (i.discount.value > 0) {
+                    let d = (i.discount.type === 'money') ? i.discount.value : (itemTotal * i.discount.value / 100);
+                    itemTotal -= d;
+                }
+                if (itemTotal < 0) itemTotal = 0;
+                // Add property for history
+                i.finalTotal = itemTotal;
+                subtotal += itemTotal;
+            });
+
+            let globalDiscVal = 0;
+            if (saleGlobalDiscount.value > 0) {
+                if (saleGlobalDiscount.type === 'money') globalDiscVal = saleGlobalDiscount.value;
+                else globalDiscVal = subtotal * (saleGlobalDiscount.value / 100);
+            }
+            let finalTotal = subtotal - globalDiscVal;
+            if (finalTotal < 0) finalTotal = 0;
+
+            showConfirm("Finalizar", `Confirmar venda de R$ ${finalTotal.toFixed(2)}?`, () => {
                 const method = document.getElementById('payment-method').value;
                 const inst = (method === 'Crédito Parcelado') ? parseInt(document.getElementById('pos-installments').value) : 1;
+
                 const saleData = {
-                    id: generateID('sale'), date: new Date().toISOString().split('T')[0], time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-                    items: cart, total: cart.reduce((a, b) => a + b.total, 0), method, installments: inst, created: firebase.firestore.FieldValue.serverTimestamp()
+                    id: generateID('sale'),
+                    date: new Date().toISOString().split('T')[0],
+                    time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                    items: cart, // Items now contain discount info
+                    globalDiscount: saleGlobalDiscount,
+                    subtotal: subtotal,
+                    discountValue: globalDiscVal,
+                    total: finalTotal,
+                    method,
+                    installments: inst,
+                    created: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
                 const batch = db.batch();
-                batch.set(db.collection('sales').doc(), saleData);
+                batch.set(db.collection('sales').doc(String(saleData.id)), saleData);
 
-                // Update Linked OS Status
+                // Update Linked OS Status and Stock
                 const osUids = [...new Set(cart.filter(i => i.type === 'OS_LINKED').map(i => i.osUid))];
                 osUids.forEach(uid => { if (uid) batch.update(db.collection('work_orders').doc(uid), { status: 'Venda efetuada' }); });
 
+                // Update Inventory (Deduct Stock)
+                cart.forEach(item => {
+                    if (item.type === 'STOCK') {
+                        // Find the real item in memory to get the uid
+                        const stockItem = inventory.find(i => i.id === item.originId);
+                        if (stockItem && stockItem.type === 'P') {
+                            const newQty = (stockItem.quantity || 0) - item.qtd;
+                            const ref = db.collection('inventory').doc(stockItem.uid);
+                            batch.update(ref, { quantity: newQty });
+                        }
+                    }
+                });
+
                 batch.commit().then(() => {
-                    cart = []; renderCart();
+                    cart = [];
+                    saleGlobalDiscount = { type: 'money', value: 0 };
+                    renderCart();
                     document.getElementById('payment-method').value = "Dinheiro"; toggleInstallments();
                     showToast('Venda realizada!');
-                    navTo('overview');
                     setTimeout(() => printSale(saleData.id), 500);
                 });
             });
@@ -2085,9 +2572,7 @@
         function renderOverview() {
             const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
 
-            // Restriction logic for Overview Date Filters
             if (!isAdmin) {
-                // Force dates to today for non-admins
                 const todayStr = new Date().toISOString().split('T')[0];
                 document.getElementById('overview-date-start').value = todayStr;
                 document.getElementById('overview-date-end').value = todayStr;
@@ -2103,7 +2588,6 @@
             const start = new Date(startVal + "T00:00:00");
             const end = new Date(endVal + "T00:00:00");
 
-            // Update Date Display Text
             const dateDisplay = document.getElementById('current-date-display');
             if (startVal === endVal) {
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -2116,16 +2600,26 @@
 
             document.getElementById('today-sales').innerText = `R$ ${filtered.reduce((a, s) => a + s.total, 0).toFixed(2)}`;
             document.querySelector('#daily-sales-table tbody').innerHTML = filtered.map(s => {
+
+                // Compatibilidade com vendas antigas que não tinham subtotal salvo
+                const sub = s.subtotal || s.total;
+                const desc = s.discountValue || 0;
+
                 const detailTable = `
-                <table class="detail-table"><thead><tr><th>Item</th><th>Qtd</th><th>Unit.</th><th style="text-align:right;">Subtotal</th></tr></thead><tbody>
-                ${s.items.map(i => `<tr><td>${i.desc}</td><td>${i.qtd}</td><td>R$ ${i.price.toFixed(2)}</td><td align="right">R$ ${i.total.toFixed(2)}</td></tr>`).join('')}
-                <tr class="detail-total-row"><td colspan="3" align="right">TOTAL</td><td align="right">R$ ${s.total.toFixed(2)}</td></tr></tbody></table>`;
+                <table class="detail-table"><thead><tr><th>Item</th><th>Qtd</th><th>Unit.</th><th style="text-align:right;">Total Item</th></tr></thead><tbody>
+                ${s.items.map(i => {
+                    let iTotal = i.finalTotal !== undefined ? i.finalTotal : (i.total || (i.price * i.qtd));
+                    return `<tr><td>${i.desc}</td><td>${i.qtd}</td><td>R$ ${i.price.toFixed(2)}</td><td align="right">R$ ${iTotal.toFixed(2)}</td></tr>`;
+                }).join('')}
+                ${desc > 0 ? `<tr class="detail-total-row" style="background:white;"><td colspan="3" align="right" style="color:#64748b; font-weight:500;">Subtotal</td><td align="right" style="color:#64748b; font-weight:500;">R$ ${sub.toFixed(2)}</td></tr>
+                              <tr class="detail-total-row" style="background:white;"><td colspan="3" align="right" style="color:var(--success); font-weight:500;">Desconto Global</td><td align="right" style="color:var(--success); font-weight:500;">- R$ ${desc.toFixed(2)}</td></tr>` : ''}
+                <tr class="detail-total-row"><td colspan="3" align="right">TOTAL FINAL</td><td align="right">R$ ${s.total.toFixed(2)}</td></tr></tbody></table>`;
 
                 return `
                 <tr class="clickable-row" onclick="toggleDetails('${s.id}')">
                     <td><strong>${s.id}</strong></td><td>${new Date(s.date + "T00:00:00").toLocaleDateString('pt-BR')} ${s.time}</td>
                     <td>${s.method} ${s.installments > 1 ? `(${s.installments}x)` : ''}</td><td><strong>R$ ${s.total.toFixed(2)}</strong></td>
-                    <td align="center"><i class="fas fa-chevron-down text-secondary"></i></td>
+                    <td align="center"><i id="arrow-${s.id}" class="fas fa-chevron-down text-secondary"></i></td>
                 </tr>
                 <tr id="detail-${s.id}" class="details-row"><td colspan="5" style="padding:0;"><div class="details-content">
                     <h5>Detalhes:</h5>${detailTable}
@@ -2138,12 +2632,15 @@
             db.collection('config').doc('companyProfile').set(company);
         }
         function saveSettings() {
-            company = {
-                name: document.getElementById('conf-name').value,
-                cnpj: document.getElementById('conf-cnpj').value,
-                address: document.getElementById('conf-address').value,
-                phone: document.getElementById('conf-phone').value
-            };
+            company.name = document.getElementById('conf-name').value;
+            company.cnpj = document.getElementById('conf-cnpj').value;
+            company.address = document.getElementById('conf-address').value;
+            company.phone = document.getElementById('conf-phone').value;
+
+            // New password field
+            const pass = document.getElementById('conf-discount-pass').value;
+            if (pass) company.discountPassword = pass;
+
             saveSettingsToFire();
             showToast('Dados salvos!');
         }
@@ -2179,12 +2676,33 @@
         }
         function printSale(id) {
             const s = sales.find(x => x.id === id); if (!s) return;
-            const rows = s.items.map(i => `<tr><td>${i.desc}</td><td>${i.qtd}</td><td>R$ ${i.price.toFixed(2)}</td><td align="right">R$ ${i.total.toFixed(2)}</td></tr>`).join('');
+
+            // Logic for showing discount in print
+            const sub = s.subtotal || s.total;
+            const discVal = s.discountValue || 0;
+
+            const rows = s.items.map(i => {
+                // Item details
+                let iTotal = i.finalTotal !== undefined ? i.finalTotal : (i.total || (i.price * i.qtd));
+                let discountText = "";
+                if (i.discount && i.discount.value > 0) {
+                    discountText = `<br><small style="color:#666">(- R$ ${(i.price * i.qtd - iTotal).toFixed(2)})</small>`;
+                }
+                return `<tr><td>${i.desc}${discountText}</td><td>${i.qtd}</td><td>R$ ${i.price.toFixed(2)}</td><td align="right">R$ ${iTotal.toFixed(2)}</td></tr>`
+            }).join('');
+
             let pay = s.method; if (s.installments > 1) pay += ` - ${s.installments}x de R$ ${(s.total / s.installments).toFixed(2)}`;
-            // Removed Cliente/Consumer Final text as requested
+
+            let totalsHtml = "";
+            if (discVal > 0) {
+                totalsHtml += `<div class="total-row"><span>Subtotal</span><span>R$ ${sub.toFixed(2)}</span></div>`;
+                totalsHtml += `<div class="total-row"><span>Desconto</span><span>- R$ ${discVal.toFixed(2)}</span></div>`;
+            }
+            totalsHtml += `<div class="total-row final"><span>Pago</span><span>R$ ${s.total.toFixed(2)}</span></div><div class="payment-detail-print"><strong>Forma de Pagamento:</strong><br>${pay}</div>`;
+
             printDocument("COMPROVANTE", `<div><strong>Venda:</strong> ${s.id}</div><div><strong>Data:</strong> ${new Date(s.date + "T00:00:00").toLocaleDateString()} ${s.time}</div>`,
-                ``, // Empty info box
-                rows, `<div class="total-row final"><span>Pago</span><span>R$ ${s.total.toFixed(2)}</span></div><div class="payment-detail-print"><strong>Forma de Pagamento:</strong><br>${pay}</div>`);
+                ``,
+                rows, totalsHtml);
         }
 
         init();

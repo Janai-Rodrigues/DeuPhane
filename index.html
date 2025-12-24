@@ -1394,9 +1394,11 @@
                             <div class="form-group">
                                 <label><i class="fas fa-box"></i> Produtos & Serviços do Estoque</label>
                                 <div style="display: flex; gap: 10px;">
-                                    <select id="pos-stock-select" style="flex: 1;">
+                                    <select id="pos-stock-select" style="flex: 2;">
                                         <option value="">Selecione...</option>
                                     </select>
+                                    <input type="number" id="pos-qty-input" value="1" min="1" style="width: 80px;"
+                                        placeholder="Qtd" autocomplete="off">
                                     <button class="btn btn-primary" onclick="addToCartFromStock()"><i
                                             class="fas fa-plus"></i> Adicionar</button>
                                 </div>
@@ -1559,7 +1561,7 @@
                             </div>
                             <div style="flex:1;">
                                 <label>Nome de Exibição</label>
-                                <input type="text" id="user-new-name" placeholder="Ex: Janaí da Silva">
+                                <input type="text" id="user-new-name" placeholder="Ex: João">
                             </div>
                             <button class="btn btn-success" onclick="saveUser()"><i class="fas fa-plus"></i>
                                 Adicionar</button>
@@ -2319,19 +2321,28 @@
 
         function addToCartFromStock() {
             const select = document.getElementById('pos-stock-select');
+            const qtyInput = document.getElementById('pos-qty-input'); // Novo input de quantidade
+            const qty = parseInt(qtyInput.value);
+
             if (!select.value) return showToast('Selecione um produto.', 'error');
+            if (isNaN(qty) || qty <= 0) return showToast('Quantidade inválida.', 'error');
+
             const op = select.options[select.selectedIndex];
+            const price = parseFloat(op.dataset.price);
+
             // Added discount property
             cart.push({
                 desc: op.dataset.name,
-                price: parseFloat(op.dataset.price),
-                qtd: 1,
-                total: parseFloat(op.dataset.price),
+                price: price,
+                qtd: qty, // Usa a quantidade definida
+                total: price * qty, // Calcula o total baseado na quantidade
                 originId: select.value,
                 type: 'STOCK',
                 discount: { type: 'money', value: 0 }
             });
-            select.value = ""; renderCart();
+            select.value = "";
+            qtyInput.value = "1"; // Reseta para 1
+            renderCart();
         }
 
         function addToCartFromOS() {
